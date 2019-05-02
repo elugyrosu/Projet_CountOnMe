@@ -6,13 +6,19 @@
 //  Copyright © 2019 Vincent Saluzzo. All rights reserved.
 //
 
+
 import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
-    let calculator = Calculator()
     
+    let calculator = Calculator()
+
+    func refresh(){
+        textView.text = calculator.text
+    }
+
     func alertWithMessage(message: String){
         let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -25,21 +31,22 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
         }
         if calculator.expressionHaveResult {
-            textView.text = ""
+            calculator.text = ""
         }
-        textView.text.append(numberText)
+        calculator.text.append(numberText)
+        refresh()
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            textView.text.append(" + ")
+            calculator.text.append(" + ")
+            refresh()
         } else {
             alertWithMessage(message: "Un operateur est déja mis !")
         }
@@ -47,12 +54,13 @@ class ViewController: UIViewController {
     
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
         if calculator.canAddOperator {
-            textView.text.append(" - ")
+            calculator.text.append(" - ")
+            refresh()
         } else {
             alertWithMessage(message: "Un operateur est déja mis !")
         }
     }
-
+    
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard calculator.expressionIsCorrect else {
             return alertWithMessage(message: "Entrez une expression correcte !")
@@ -60,8 +68,10 @@ class ViewController: UIViewController {
         guard calculator.expressionHaveEnoughElement else {
             return alertWithMessage(message: "Démarrez un nouveau calcul !")
         }
-        textView.text.append(calculator.calculate())
+        if calculator.calculTotal()  == false {
+            return alertWithMessage(message: "Démarrez un nouveau calcul !")
+        }else{
+            refresh()
+        }
     }
-
 }
-

@@ -6,15 +6,19 @@
 //  Copyright © 2019 Vincent Saluzzo. All rights reserved.
 //
 
+
 import Foundation
 
 class Calculator {
-    var text = ""
+    
+    var text = String()
+    
     var elements: [String] {
         return text.split(separator: " ").map { "\($0)" }
     }
     
     // Error check computed variables
+
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-"
     }
@@ -26,12 +30,14 @@ class Calculator {
     var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-"
     }
-    
     var expressionHaveResult: Bool {
         return text.firstIndex(of: "=") != nil
     }
-    func calculate() -> String{
+    
+    
+    func calculTotal() -> Bool {
         // Create local copy of operations
+
         var operationsToReduce = elements
         
         // Iterate over operations while an operand still here
@@ -44,12 +50,15 @@ class Calculator {
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
-            default: fatalError("Unknown operator !")
+            default:
+                return false
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
-        return " = \(operationsToReduce.first!)"
+        
+        text.append(" = \(operationsToReduce.first!)")
+        return true
     }
 }
