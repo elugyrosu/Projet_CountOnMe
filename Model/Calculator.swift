@@ -113,11 +113,11 @@ class Calculator {
                     operandIndex = 1
                 }
             }
-            let left = Int(operationsToReduce[operandIndex - 1])!
+            let left = Float(operationsToReduce[operandIndex - 1])!
             let operand = operationsToReduce[operandIndex]
-            let right = Int(operationsToReduce[operandIndex + 1])!
+            let right = Float(operationsToReduce[operandIndex + 1])!
             
-            let result: Int
+            let result: Float
             switch operand {
 
             case "+": result = left + right
