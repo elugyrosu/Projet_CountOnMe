@@ -6,10 +6,14 @@
 //  Copyright © 2019 Vincent Saluzzo. All rights reserved.
 //
 
-
 import Foundation
 
+protocol DisplayAlert {
+    func showAlert(message: String)
+}
+
 class Calculator {
+    var displayAlertDelegate: DisplayAlert?
     
     var text = String()
     
@@ -18,7 +22,6 @@ class Calculator {
     }
     
     // Error check computed variables
-
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-"
     }
@@ -30,14 +33,52 @@ class Calculator {
     var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-"
     }
+    
     var expressionHaveResult: Bool {
         return text.firstIndex(of: "=") != nil
     }
     
     
-    func calculTotal() -> Bool {
-        // Create local copy of operations
+    func addNumber(numberText: String) -> String{
+        if expressionHaveResult {
+            text = ""
+        }
+        
+        text.append(numberText)
+        return text
+    }
+    func addPlus() -> String{
+        if canAddOperator {
+            text.append(" + ")
+        } else {
+            displayAlertDelegate?.showAlert(message: "Un operateur est déja mis !")
 
+        }
+        return text
+    }
+    
+    func addMinus() -> String{
+        if canAddOperator {
+            text.append(" - ")
+        } else {
+            displayAlertDelegate?.showAlert(message: "Un operateur est déja mis !")
+        }
+        return text
+    }
+    
+    func calculate() -> String{
+        guard expressionIsCorrect else {
+            displayAlertDelegate?.showAlert(message: "Entrez une expression correcte !")
+            return text
+        }
+        
+        guard expressionHaveEnoughElement else {
+            displayAlertDelegate?.showAlert(message: "Démarrez un nouveau calcul !")
+            return text
+
+        }
+        
+        // Create local copy of operations
         var operationsToReduce = elements
         
         // Iterate over operations while an operand still here
@@ -51,14 +92,18 @@ class Calculator {
             case "+": result = left + right
             case "-": result = left - right
             default:
-                return false
+//                fatalError("Unknown operator !")
+                displayAlertDelegate?.showAlert(message: "Démarrez un nouveau calcul !")
+                return text
+
             }
-            
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
         
         text.append(" = \(operationsToReduce.first!)")
-        return true
+        return text
     }
+    
+
 }
