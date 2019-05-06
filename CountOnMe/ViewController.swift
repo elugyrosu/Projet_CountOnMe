@@ -37,9 +37,18 @@ class ViewController: UIViewController {
         textView.text = calculator.addMinus()
     }
     
+    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
+        textView.text = calculator.addMultiplication()
+    }
+    
+    @IBAction func tappedDivisionButton(_ sender: UIButton) {
+        textView.text = calculator.addDivision()
+    }
+    
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         textView.text = calculator.calculate()
     }
+
 
 }
 

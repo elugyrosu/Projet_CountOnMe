@@ -66,6 +66,24 @@ class Calculator {
         return text
     }
     
+    func addMultiplication() -> String{
+        if canAddOperator {
+            text.append(" * ")
+        } else {
+            displayAlertDelegate?.showAlert(message: "Un operateur est déja mis !")
+        }
+        return text
+    }
+    
+    func addDivision() -> String{
+        if canAddOperator {
+            text.append(" / ")
+        } else {
+            displayAlertDelegate?.showAlert(message: "Un operateur est déja mis !")
+        }
+        return text
+    }
+    
     func calculate() -> String{
         guard expressionIsCorrect else {
             displayAlertDelegate?.showAlert(message: "Entrez une expression correcte !")
@@ -83,22 +101,39 @@ class Calculator {
         
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            let left = Int(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Int(operationsToReduce[2])!
+            
+            var operandIndex = Int()
+    
+            if operationsToReduce.contains("*"){
+                operandIndex = operationsToReduce.firstIndex(of: "*")!
+            }else{
+                if operationsToReduce.contains("/"){
+                    operandIndex = operationsToReduce.firstIndex(of: "/")!
+                }else{
+                    operandIndex = 1
+                }
+            }
+            let left = Int(operationsToReduce[operandIndex - 1])!
+            let operand = operationsToReduce[operandIndex]
+            let right = Int(operationsToReduce[operandIndex + 1])!
             
             let result: Int
             switch operand {
+
             case "+": result = left + right
             case "-": result = left - right
+            case "*": result = left * right
+            case "/": result = left / right
+     
             default:
-//                fatalError("Unknown operator !")
                 displayAlertDelegate?.showAlert(message: "Démarrez un nouveau calcul !")
                 return text
-
             }
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(result)", at: 0)
+            operationsToReduce.remove(at: operandIndex + 1)
+            operationsToReduce.remove(at: operandIndex)
+            operationsToReduce.remove(at: operandIndex - 1)
+
+            operationsToReduce.insert("\(result)", at: operandIndex - 1)
         }
         
         text.append(" = \(operationsToReduce.first!)")
