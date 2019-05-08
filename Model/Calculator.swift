@@ -38,7 +38,7 @@ class Calculator {
         return text.firstIndex(of: "=") != nil
     }
     
-    
+    // 
     func addNumber(numberText: String) -> String{
         if expressionHaveResult {
             text = ""
@@ -84,7 +84,7 @@ class Calculator {
         return text
     }
     
-    func calculate() -> String{
+    func calculateTotal() -> String{
         guard expressionIsCorrect else {
             displayAlertDelegate?.showAlert(message: "Entrez une expression correcte !")
             return text
@@ -104,18 +104,34 @@ class Calculator {
             
             var operandIndex = Int()
     
-            if operationsToReduce.contains("*"){
-                operandIndex = operationsToReduce.firstIndex(of: "*")!
+            if operationsToReduce.contains("*") && operationsToReduce.contains("/"){
+                if let multiplicationIndex = operationsToReduce.firstIndex(of: "*"){
+                    if let divisionIndex = operationsToReduce.firstIndex(of: "/"){
+                        if multiplicationIndex < divisionIndex{
+                            operandIndex = multiplicationIndex
+                        }else{
+                            operandIndex = divisionIndex
+                        }
+                    }
+                }
             }else{
-                if operationsToReduce.contains("/"){
-                    operandIndex = operationsToReduce.firstIndex(of: "/")!
+                if operationsToReduce.contains("*"){
+                    if let multplicationIndex = operationsToReduce.firstIndex(of: "*"){
+                        operandIndex = multplicationIndex
+                    }
                 }else{
-                    operandIndex = 1
+                    if operationsToReduce.contains("/"){
+                        if let divisionIndex = operationsToReduce.firstIndex(of: "/"){
+                            operandIndex = divisionIndex
+                        }
+                    }else{
+                        operandIndex = 1
+                    }
                 }
             }
-            let left = Float(operationsToReduce[operandIndex - 1])!
             let operand = operationsToReduce[operandIndex]
-            let right = Float(operationsToReduce[operandIndex + 1])!
+            guard let left = Float(operationsToReduce[operandIndex - 1]), let right = Float(operationsToReduce[operandIndex + 1])
+                else {return text}
             
             let result: Float
             switch operand {

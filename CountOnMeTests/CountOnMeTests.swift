@@ -18,23 +18,13 @@ class CalculatorTestCase: XCTestCase {
     }
     
     func testGivenCalculIsNull_WhenAddOnePlusOneAndCalcul_ThenTotalIs2(){
-        if calculator.expressionHaveResult {
-            calculator.text = ""
-        }
-        calculator.text.append("1")
-        
-        if calculator.canAddOperator {
-            calculator.text.append(" + ")
-        }
-        
-        if calculator.expressionHaveResult {
-            calculator.text = ""
-        }
-        calculator.text.append("1")
+       calculator.text = calculator.addNumber(numberText: "1")
+       calculator.text = calculator.addPlus()
+       calculator.text = calculator.addNumber(numberText: "1")
+       calculator.text = calculator.calculateTotal()
         
         
-        XCTAssert(calculator.calculateTotal() == true)
-        XCTAssert(calculator.text == "1 + 1 = 2")
+        XCTAssert(calculator.text == "1 + 1 = 2.0")
         
         
     }

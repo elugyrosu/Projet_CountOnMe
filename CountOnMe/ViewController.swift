@@ -46,10 +46,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        textView.text = calculator.calculate()
+        textView.text = calculator.calculateTotal()
     }
-
-
 }
 
 extension ViewController: DisplayAlert {
