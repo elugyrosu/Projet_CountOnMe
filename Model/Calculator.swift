@@ -131,9 +131,16 @@ class Calculator {
             }
             let operand = operationsToReduce[operandIndex]
             guard let left = Float(operationsToReduce[operandIndex - 1]), let right = Float(operationsToReduce[operandIndex + 1])
-                else {return text}
+                else {
+                    text = ""
+                    displayAlertDelegate?.showAlert(message: "Expression incorrecte !")
+
+                    return text
+                    
+                }
             
             let result: Float
+            
             switch operand {
 
             case "+": result = left + right
@@ -149,12 +156,17 @@ class Calculator {
             operationsToReduce.remove(at: operandIndex)
             operationsToReduce.remove(at: operandIndex - 1)
 
-            operationsToReduce.insert("\(result)", at: operandIndex - 1)
+            operationsToReduce.insert("\(result.clean)", at: operandIndex - 1)
         }
         
         text.append(" = \(operationsToReduce.first!)")
         return text
     }
     
+}
 
+extension Float {
+    var clean: String {
+        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
 }
