@@ -136,10 +136,9 @@ class Calculator {
                     displayAlertDelegate?.showAlert(message: "Expression incorrecte !")
 
                     return text
-                    
                 }
             
-            let result: Float
+            var result: Float
             
             switch operand {
 
@@ -155,18 +154,20 @@ class Calculator {
             operationsToReduce.remove(at: operandIndex + 1)
             operationsToReduce.remove(at: operandIndex)
             operationsToReduce.remove(at: operandIndex - 1)
+            
+            let isInteger = floorf(result)
+            if isInteger == result{
+                let resultToInt = Int(result)
+                operationsToReduce.insert("\(resultToInt)", at: operandIndex - 1)
 
-            operationsToReduce.insert("\(result.clean)", at: operandIndex - 1)
+            }else{
+
+                operationsToReduce.insert("\(result)", at: operandIndex - 1)
+            }
         }
         
         text.append(" = \(operationsToReduce.first!)")
         return text
     }
     
-}
-
-extension Float {
-    var clean: String {
-        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-    }
 }
