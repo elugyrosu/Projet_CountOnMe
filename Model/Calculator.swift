@@ -23,7 +23,7 @@ class Calculator {
     
     // Error check computed variables
     var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-"
+        return elements.last != "+" && elements.last != "-" && elements.last != "*" && elements.last != "/"
     }
     
     var expressionHaveEnoughElement: Bool {
@@ -31,7 +31,7 @@ class Calculator {
     }
     
     var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-"
+        return elements.last != "+" && elements.last != "-" && elements.last != "*" && elements.last != "/"
     }
     
     var expressionHaveResult: Bool {
@@ -85,6 +85,8 @@ class Calculator {
     }
     
     func calculateTotal() -> String{
+
+        
         guard expressionIsCorrect else {
             displayAlertDelegate?.showAlert(message: "Entrez une expression correcte !")
             return text
@@ -98,6 +100,13 @@ class Calculator {
         
         // Create local copy of operations
         var operationsToReduce = elements
+        
+        if operationsToReduce[0] == "+" || operationsToReduce[0] == "-" || operationsToReduce[0] == "/" || operationsToReduce[0] == "*"{
+            text = ""
+            displayAlertDelegate?.showAlert(message: "Veuillez ne pas insérer d'opérateur en début de calcul")
+            
+            return text
+        }
         
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
@@ -123,6 +132,7 @@ class Calculator {
                     if operationsToReduce.contains("/"){
                         if let divisionIndex = operationsToReduce.firstIndex(of: "/"){
                             operandIndex = divisionIndex
+                            
                         }
                     }else{
                         operandIndex = 1
@@ -130,10 +140,11 @@ class Calculator {
                 }
             }
             let operand = operationsToReduce[operandIndex]
+            
             guard let left = Float(operationsToReduce[operandIndex - 1]), let right = Float(operationsToReduce[operandIndex + 1])
                 else {
                     text = ""
-                    displayAlertDelegate?.showAlert(message: "Expression incorrecte !")
+                    displayAlertDelegate?.showAlert(message: "Erreur inconnue !")
 
                     return text
                 }
@@ -145,7 +156,14 @@ class Calculator {
             case "+": result = left + right
             case "-": result = left - right
             case "*": result = left * right
-            case "/": result = left / right
+            case "/":
+                if right == 0 {
+                    displayAlertDelegate?.showAlert(message: "La division par zéro n'existe pas !")
+                    text = ""
+                    return text
+                }else{
+                    result = left / right
+                }
      
             default:
                 displayAlertDelegate?.showAlert(message: "Démarrez un nouveau calcul !")

@@ -154,6 +154,25 @@ class CalculatorTestCase: XCTestCase {
         
         XCTAssert(calculator.text == "")
     }
+    func testGivenDivisionByZero_WhenCalculate_ThenTextIsReset(){
+        calculator.text = calculator.addNumber(numberText: "9")
+        calculator.text = calculator.addDivision()
+        calculator.text = calculator.addNumber(numberText: "0")
+        
+        calculator.text = calculator.calculateTotal()
+        
+        XCTAssert(calculator.text == "")
+    }
+    func testGivenOneDivisonAnd_WhenDivisionAgain_ThenContinueCalculWithoutDivision(){
+        calculator.text = calculator.addNumber(numberText: "1")
+        calculator.text = calculator.addDivision()
+        
+        calculator.text = calculator.addDivision()
+
+  
+        XCTAssert(calculator.text == "1 / ")
+    }
+
 
 
 }
