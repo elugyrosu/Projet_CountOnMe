@@ -9,19 +9,24 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // No logic, just connections and alert protocol
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
     
     let calculator = Calculator()
     
-    // View Life cycles
+    // MARK: viewDidLoad
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        calculator.displayAlertDelegate = self
-        // Do any additional setup after loading the view.
+        calculator.displayAlertDelegate = self // Use alert protocol (run at start)
     }
     
-    // View actions
+    // MARK: View actions
+    // Adapted for Model extraction, all logic moved to functions with string return
+    
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
@@ -37,11 +42,11 @@ class ViewController: UIViewController {
         textView.text = calculator.addMinus()
     }
     
-    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
+    @IBAction func tappedMultiplicationButton(_ sender: UIButton) { // add for multiplication
         textView.text = calculator.addMultiplication()
     }
     
-    @IBAction func tappedDivisionButton(_ sender: UIButton) {
+    @IBAction func tappedDivisionButton(_ sender: UIButton) { // add for divison
         textView.text = calculator.addDivision()
     }
     
@@ -50,7 +55,9 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: DisplayAlert {
+// MARK: - UIAlertController
+
+extension ViewController: DisplayAlert { // for DisplayAlert protocol
     func showAlert(message: String) {
         let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
