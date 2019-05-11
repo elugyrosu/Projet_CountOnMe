@@ -57,7 +57,7 @@ class ViewController: UIViewController {
 
 // MARK: - UIAlertController
 
-extension ViewController: DisplayAlert { // for DisplayAlert protocol
+extension ViewController: DisplayAlert { // use DisplayAlert protocol
     func showAlert(message: String) {
         let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

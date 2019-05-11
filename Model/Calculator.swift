@@ -9,13 +9,13 @@
 import Foundation   // No UIkit in the Model
 
 // MARK: DisplayAlert Protocol
+// Protocol to send alert messages, keep alert logic without UIkit in Model
 
-protocol DisplayAlert {                 // Protocol to send alert messages, keep alert logic without UIkit in Model
+protocol DisplayAlert {
     func showAlert(message: String)
 }
 
 // MARK: Calculator Class
-
 
 class Calculator {
     var displayAlertDelegate: DisplayAlert? // Will get message
@@ -140,7 +140,7 @@ class Calculator {
                     }
                 }else{
                     if operationsToReduce.contains("/"){
-                        if let divisionIndex = operationsToReduce.firstIndex(of: "/"){      // get priority for * only
+                        if let divisionIndex = operationsToReduce.firstIndex(of: "/"){      // get priority for / only
                             operandIndex = divisionIndex
                         }
                     }else{
@@ -151,7 +151,7 @@ class Calculator {
             
             let operand = operationsToReduce[operandIndex]
             
-            guard let left = Float(operationsToReduce[operandIndex - 1]), let right = Float(operationsToReduce[operandIndex + 1])
+            guard let left = Double(operationsToReduce[operandIndex - 1]), let right = Double(operationsToReduce[operandIndex + 1])
                 else {
                     text = ""
                     displayAlertDelegate?.showAlert(message: "Erreur inconnue !") // due of stability
@@ -159,7 +159,7 @@ class Calculator {
                     return text
             }
             
-            var result: Float // will change with floorf
+            var result: Double // will change with floorf
             
             switch operand { // add division and multiplication
                 
@@ -186,7 +186,7 @@ class Calculator {
             operationsToReduce.remove(at: operandIndex - 1)
             
             // add integer comparative to round the result to Int if possible (remove .0)
-            let isInteger = floorf(result)
+            let isInteger = floor(result)
             if isInteger == result{
                 let resultToInt = Int(result)
                 operationsToReduce.insert("\(resultToInt)", at: operandIndex - 1)

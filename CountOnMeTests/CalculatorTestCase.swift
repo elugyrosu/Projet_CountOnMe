@@ -53,7 +53,7 @@ class CalculatorTestCase: XCTestCase {
         
         calculator.text = calculator.calculateTotal()
         
-        XCTAssert(calculator.text == "2 + 10 / 93 - 5 * 3 / 6 = -0.39247322")
+        XCTAssert(calculator.text == "2 + 10 / 93 - 5 * 3 / 6 = -0.39247311827957")
     }
     
     func testGivenCalculOnePlusOne_WhenAddTwo_ThenTextIsTwo(){  // Check if pass to new operation after total
