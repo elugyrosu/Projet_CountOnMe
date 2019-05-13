@@ -35,19 +35,19 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        textView.text = calculator.addPlus()
+        textView.text = calculator.addOperator(element: .addition)
     }
     
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        textView.text = calculator.addMinus()
+        textView.text = calculator.addOperator(element: .substraction)
     }
     
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) { // add for multiplication
-        textView.text = calculator.addMultiplication()
+        textView.text = calculator.addOperator(element: .multiplication)
     }
     
     @IBAction func tappedDivisionButton(_ sender: UIButton) { // add for divison
-        textView.text = calculator.addDivision()
+        textView.text = calculator.addOperator(element: .division)
     }
     
     @IBAction func tappedEqualButton(_ sender: UIButton) {
