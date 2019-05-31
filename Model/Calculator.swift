@@ -101,7 +101,7 @@ class Calculator {
                     return text
             }
             var result: Double // will change with floorf
-            
+    
             switch operand { // add division and multiplication
             case "+": result = left + right
             case "-": result = left - right
@@ -131,7 +131,9 @@ class Calculator {
                 operationsToReduce.insert("\(result)", at: operandIndex - 1)
             }
         }
-        text.append(" = \(operationsToReduce.first!)") // return total
+        if let finalResult = operationsToReduce.first{
+            text.append(" = \(finalResult)") // return total
+        }
         return text
     }
     
